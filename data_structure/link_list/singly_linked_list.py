@@ -3,7 +3,6 @@
 """
     This is a link list demo with python
     1.单向链表
-    2.双向链表
 """
 
 
@@ -14,6 +13,7 @@ class Node(object):
         self.next = nxt
 
 
+# 单向链表
 class SinglyLinkedList(object):
     def __init__(self):
         self.head = None
@@ -78,7 +78,7 @@ class SinglyLinkedList(object):
     def print_all(self):
         p = self.head
         while p is not None:
-            print(p.val,)
+            print(p.val, end="")
             p = p.next
         print("")
 
@@ -153,7 +153,7 @@ class CircularSinglyLinkedList(object):
         # 链表不空，就要链接在尾结点之后， 就是首结点
         else:
             p.next = self.rear.next  # 先将原来的首结点链接在自己的后边
-            self.rear.next = p    # 自己成为首结点
+            self.rear.next = p  # 自己成为首结点
 
     # 尾端加入新元素
     def append(self, element):
@@ -200,4 +200,3 @@ class CircularSinglyLinkedList(object):
                 print("")
                 break
             p = p.next
-
