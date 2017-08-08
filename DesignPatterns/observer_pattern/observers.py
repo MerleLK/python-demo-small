@@ -44,3 +44,13 @@ class AllDataShow(AbstractObserver):
     def display(self):
         print("Now the data is: \ntemperature: {}°C. \nhumidity: {}%. \npressure: {}MPa."
               "".format(self.tem, self.hum, self.pre))
+
+
+class TestObserver(AbstractObserver):
+    def __init__(self):
+        pass
+
+
+if __name__ == '__main__':
+    t = TestObserver()
+    print(t)

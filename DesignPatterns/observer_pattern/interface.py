@@ -9,9 +9,11 @@
 class AbstractObserver(object):
     def update(self, tem, hum, pre):
         raise NotImplementedError("Must subclass me")
+        # return NotImplemented
 
     def display(self):
         raise NotImplementedError("Must subclass me")
+        # return NotImplemented
 
 
 class AbstractSubject(object):
