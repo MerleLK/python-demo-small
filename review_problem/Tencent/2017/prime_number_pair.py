@@ -19,7 +19,6 @@ import math
 def calc_count(n):
     count = 0
     my_nums = get_all_prime_num(n)
-    print(my_nums)
     for i in my_nums:
         if i < (n * 0.5 + 1):
             if is_prime(n - i):
