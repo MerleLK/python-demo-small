@@ -14,7 +14,7 @@ def insert_while(nums):
     for index in range(1, len(nums)):
         deal_num = nums[index]
         j = index - 1
-        while j >= 0 and nums[j + 1] > deal_num:
+        while j >= 0 and nums[j] > deal_num:
             nums[j + 1] = nums[j]
             j -= 1
         nums[j + 1] = deal_num
@@ -29,8 +29,8 @@ def insert_for(nums):
 if __name__ == '__main__':
 
     start = time.time()
-    insert_for(numbers)
-    # insert_while(numbers)
+    # insert_for(numbers)
+    insert_while(numbers)
     end = time.time()
     print(numbers)
     print("cost time is: {}".format(end-start))

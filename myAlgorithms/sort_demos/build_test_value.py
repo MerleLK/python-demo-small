@@ -9,5 +9,5 @@ import random
 numbers = []
 
 # 随机生成列表
-for i in range(10000):
+for i in range(10):
     numbers.append(random.randint(1, 100000))

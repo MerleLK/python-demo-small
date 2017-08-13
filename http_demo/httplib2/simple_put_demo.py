@@ -1,6 +1,6 @@
 # coding=utf-8
 
-# this is a simple demo to put something by http put
+# this is a simple demo to put something by http_demo put
 
 import httplib2
 from datetime import datetime
@@ -13,7 +13,7 @@ json_data = simplejson.dumps(data)
 now_date = datetime.now()  # 当前时间
 
 # build a dest url
-URL = 'http://127.0.0.1:10000'
+URL = 'http_demo://127.0.0.1:10000'
 
 # get a Http object
 h = httplib2.Http()
