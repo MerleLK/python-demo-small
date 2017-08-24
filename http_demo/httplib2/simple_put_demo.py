@@ -7,7 +7,7 @@ from datetime import datetime
 import simplejson
 
 # a simple json data
-data = {'header0':[{'key1':'value1', 'key2':'value2'}]}
+data = {'header0': [{'key1': 'value1', 'key2': 'value2'}]}
 json_data = simplejson.dumps(data)
 
 now_date = datetime.now()  # 当前时间
@@ -19,10 +19,9 @@ URL = 'http_demo://127.0.0.1:10000'
 h = httplib2.Http()
 
 resp, content = h.request(URL,
-        'PUT',
-        json_data,
-        headers={'ContentType':'application/json', 
-                'Host':'192.168.1.105'
-            }
-        )
-
+                          'PUT',
+                          json_data,
+                          headers={'ContentType': 'application/json',
+                                   'Host': '192.168.1.105'
+                                   }
+                          )
