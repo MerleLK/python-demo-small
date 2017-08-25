@@ -27,13 +27,13 @@ class Solution:
         return cur
 
     def rebuild(self, pre, tin):
-            if tin:
-                index = tin.index(pre.pop(0))
-                root = TreeNode(tin[index])
-                root.left = self.rebuild(pre, tin[:index])
-                root.right = self.rebuild(pre, tin[index + 1:])
+        if tin:
+            index = tin.index(pre.pop(0))
+            root = TreeNode(tin[index])
+            root.left = self.rebuild(pre, tin[:index])
+            root.right = self.rebuild(pre, tin[index + 1:])
 
-                return root
+            return root
 
     def lookup(self, root):
         stack = [root]
