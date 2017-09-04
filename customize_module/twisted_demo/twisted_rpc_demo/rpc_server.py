@@ -17,6 +17,8 @@
 """
 
 import sys
+
+import datetime
 from twisted.internet import reactor, endpoints
 from twisted.web import xmlrpc, server
 from twisted.python import log
@@ -36,11 +38,23 @@ class RpcServer(xmlrpc.XMLRPC):
         raise xmlrpc.Fault(123, "This is a fault!")
 
 
+class GetDate(xmlrpc.XMLRPC):
+    """return the time now"""
+
+    def xmlrpc_time(self):
+        return datetime.datetime.now()
+
+
 log.startLogging(sys.stdout)
 
 if __name__ == '__main__':
     r = RpcServer()
-    endpoint = endpoints.TCP4ServerEndpoint(reactor, 7080)
-    endpoint.listen(server.Site(r))
+    date = GetDate()
+    # r is the main procedure thread and the other is others thread
+    r.putSubHandler('date', date)  # add a instance to the sub handler
+    reactor.listenTCP(7080, server.Site(r))
+
+    # endpoint = endpoints.TCP4ServerEndpoint(reactor, 7080)
+    # endpoint.listen(server.Site(r))
     print("The Server is listening on port at {p}".format(p=7080))
     reactor.run()
