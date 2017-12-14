@@ -16,6 +16,7 @@ class MyDatabase(object):
             user=USER,
             password=PASSWORD,
             db=DB_NAME,
+            charset='utf8',
         )
         # self.cur = self.db.cursor()
 
@@ -24,9 +25,9 @@ class MyDatabase(object):
         sql = """
         CREATE TABLE music_info(
           id INTEGER PRIMARY KEY,
-          name VARCHAR(100) NOT NULL ,
-          music_id VARCHAR(20) NOT NULL ,
-          singer VARCHAR(50) NOT NULL ,
+          name VARCHAR(255) NOT NULL ,
+          music_id VARCHAR(255) NOT NULL ,
+          singer VARCHAR(255) NOT NULL ,
           total INTEGER 
         )
         """
@@ -59,5 +60,5 @@ db = MyDatabase()
 
 
 if __name__ == '__main__':
-    # db.create_table()
-    print(db.insert_data("TEST", "123", "merle", 123))
+    db.create_table()
+    # print(db.insert_data("TEST", "123", "merle", 123))

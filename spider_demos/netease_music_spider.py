@@ -1,12 +1,16 @@
 # coding=utf-8
 
 import os
+import sys
 import json
 import base64
 import requests
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 from db_demo import db
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 # follow by https://www.zhihu.com/question/31677442
@@ -98,7 +102,9 @@ def read_ever(song_id):
     try:
         total = req.json()['total']
     except KeyError:
-        total = 0
+        print("may be chatting...")
+        print(req.json())
+        sys.exit()
     if int(total) > 10000:
         get_song_info(song_id, total)
     else:
