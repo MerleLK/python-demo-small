@@ -95,7 +95,10 @@ def read_ever(song_id):
         'encSecKey': enc_sec_key
     }
     req = requests.post(url, headers=headers, data=data)
-    total = req.json()['total']
+    try:
+        total = req.json()['total']
+    except KeyError:
+        total = 0
     if int(total) > 10000:
         get_song_info(song_id, total)
     else:
@@ -110,7 +113,7 @@ def get_song_info(song_id, total):
     song_name = content_list[0]
     song_singer = content_list[1]
     if db.insert_data(song_name.encode('utf-8'), song_id, song_singer.encode('utf-8'), total):
-        print("saved one song. {name}".format(song_name.encode('utf-8')))
+        print("saved one song. {name}".format(name=song_name.encode('utf-8')))
     else:
         print("has error.................")
 
