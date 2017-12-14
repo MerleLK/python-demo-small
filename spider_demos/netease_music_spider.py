@@ -6,6 +6,7 @@ import base64
 import requests
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
+from db_demo import db
 
 
 # follow by https://www.zhihu.com/question/31677442
@@ -96,7 +97,6 @@ def read_ever(song_id):
     req = requests.post(url, headers=headers, data=data)
     total = req.json()['total']
     if int(total) > 10000:
-        print(song_id, total)
         get_song_info(song_id, total)
     else:
         pass
@@ -109,7 +109,10 @@ def get_song_info(song_id, total):
     content_list = soup.title.string.split(' - ')
     song_name = content_list[0]
     song_singer = content_list[1]
-    print("Song message: id: {id}   name: {name}   singer: {singer}  comments_num: {num}".format(id=song_id, name=song_name.encode('utf-8'), singer=song_singer.encode('utf-8'), num=total))
+    if db.insert_data(song_name.encode('utf-8'), song_id, song_singer.encode('utf-8'), total):
+        print("saved one song. {name}".format(song_name.encode('utf-8')))
+    else:
+        print("has error.................")
 
 
 if __name__ == '__main__':
