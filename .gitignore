@@ -4,3 +4,4 @@ venv
 *.pyc
 
 *.jpg
+spider_demos/spider_setting.py

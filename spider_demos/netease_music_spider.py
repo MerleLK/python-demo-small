@@ -3,10 +3,12 @@
 import os
 import sys
 import json
+import time
 import base64
 import requests
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
+from spider_setting import USERNAME, PW, SECONDS, BEGIN, END
 from db_demo import db
 
 reload(sys)
@@ -15,12 +17,17 @@ sys.setdefaultencoding('utf-8')
 
 # follow by https://www.zhihu.com/question/31677442
 DEFAULT_HEADER = {
-    'Referer': 'http://music.163.com/',
-    'Host': 'music.163.com',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0 Iceweasel/38.3.0',
-    'Accept': 'text/html, application/xhtml+xml;application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Encoding': 'gzip, deflate'
-}
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Encoding': "gzip, deflate",
+        'Connection': "keep-alive",
+        'Content-Type': "application/x-www-form-urlencoded",
+        'Cookie': 'appver=2.0.2;',
+        'Host': "music.163.com",
+        'Origin': "http://music.163.com",
+        'Referer': "http://music.163.com/",
+        'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+    }
 
 BASE_URL = 'http://music.163.com'
 
@@ -68,21 +75,7 @@ def create_secret_key(size):
 
 def read_ever(song_id):
     url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_' + str(song_id) + '/?csrf_token='
-    headers = {
-        'Accept': "*/*",
-        'Accept-Encoding': "gzip, deflate",
-        'Accept-Language': "zh-CN,zh;q=0.8",
-        'Connection': "keep-alive",
-        'Content-Length': "416",
-        'Content-Type': "application/x-www-form-urlencoded",
-        'Cookie': 'appver=2.0.2;',
-        'Host': "music.163.com",
-        'Origin': "http://music.163.com",
-        'Referer': "http://music.163.com/",
-        'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
-    }
-    text = {'username': '', 'password': '', 'rememberLogin': 'true'}
+    text = {'username': USERNAME, 'password': PW, 'rememberLogin': 'true'}
     modulus = '00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17' \
               'a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af' \
               '6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b' \
@@ -98,7 +91,7 @@ def read_ever(song_id):
         'params': enc_text,
         'encSecKey': enc_sec_key
     }
-    req = requests.post(url, headers=headers, data=data)
+    req = requests.post(url, headers=DEFAULT_HEADER, data=data)
     try:
         total = req.json()['total']
     except KeyError:
@@ -109,6 +102,7 @@ def read_ever(song_id):
         get_song_info(song_id, total)
     else:
         pass
+    time.sleep(SECONDS)
 
 
 def get_song_info(song_id, total):
@@ -126,5 +120,5 @@ def get_song_info(song_id, total):
 
 if __name__ == '__main__':
     # 区间 1-1297
-    for i in xrange(100):
-        get_page(str(i))
+    for index in xrange(BEGIN, END):
+        get_page(str(index))

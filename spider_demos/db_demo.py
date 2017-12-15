@@ -1,11 +1,12 @@
 # coding=utf-8
 
 import MySQLdb
+import spider_setting
 
-HOST = ''
-USER = ''
-PASSWORD = ''
-DB_NAME = ''
+HOST = spider_setting.HOST
+USER = spider_setting.USER
+PASSWORD = spider_setting.PASSWORD
+DB_NAME = spider_setting.DB
 
 
 class MyDatabase(object):
