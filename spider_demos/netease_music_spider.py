@@ -37,7 +37,11 @@ session.headers.update(DEFAULT_HEADER)
 
 def get_page(page_index):
     page_url = 'http://music.163.com/discover/playlist/?order=hot&cat=全部&limit=35&offset=' + page_index
-    soup = BeautifulSoup(session.get(page_url).content, "html.parser")
+    try:
+        soup = BeautifulSoup(session.get(page_url).content, "html.parser")
+    except Exception:
+        print("page_error...")
+        soup = None
     song_list = soup.findAll('a', attrs={'class': 'tit f-thide s-fc0'})
     for i in song_list:
         print(i['href'])
@@ -46,12 +50,17 @@ def get_page(page_index):
 
 def get_play_list(play_list_id):
     play_list_url = BASE_URL + play_list_id
-    soup = BeautifulSoup(session.get(play_list_url).content, "html.parser")
-    song_list = soup.find('ul', attrs={'class': 'f-hide'})
-    for i in song_list.findAll('li'):
-        start_index = i.find('a')['href']
-        song_id = start_index.split('=')[1]
-        read_ever(song_id)  # 得到一万评论以上的音乐
+    try:
+        soup = BeautifulSoup(session.get(play_list_url).content, "html.parser")
+    except Exception:
+        print("list_error...")
+        soup = None
+    if not soup:
+        song_list = soup.find('ul', attrs={'class': 'f-hide'})
+        for i in song_list.findAll('li'):
+            start_index = i.find('a')['href']
+            song_id = start_index.split('=')[1]
+            read_ever(song_id)  # 得到一万评论以上的音乐
 
 
 def aes_encrypt(text, sec_key):
@@ -108,14 +117,19 @@ def read_ever(song_id):
 def get_song_info(song_id, total):
     url = BASE_URL + '/song?id=' + str(song_id)
     url.decode('utf-8')
-    soup = BeautifulSoup(session.get(url).content, "html.parser")
-    content_list = soup.title.string.split(' - ')
-    song_name = content_list[0]
-    song_singer = content_list[1]
-    if db.insert_data(song_name.encode('utf-8'), song_id, song_singer.encode('utf-8'), total):
-        print("saved one song. {name}".format(name=song_name.encode('utf-8')))
-    else:
-        print("has error.................")
+    try:
+        soup = BeautifulSoup(session.get(url).content, "html.parser")
+    except Exception:
+        print("error...")
+        soup = None
+    if not soup:
+        content_list = soup.title.string.split(' - ')
+        song_name = content_list[0]
+        song_singer = content_list[1]
+        if db.insert_data(song_name.encode('utf-8'), song_id, song_singer.encode('utf-8'), total):
+            print("saved one song. {name}".format(name=song_name.encode('utf-8')))
+        else:
+            print("has error.................")
 
 
 if __name__ == '__main__':
