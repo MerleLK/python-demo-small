@@ -42,10 +42,11 @@ def get_page(page_index):
     except Exception:
         print("page_error...")
         soup = None
-    song_list = soup.findAll('a', attrs={'class': 'tit f-thide s-fc0'})
-    for i in song_list:
-        print(i['href'])
-        get_play_list(i['href'])
+    if soup:
+        song_list = soup.findAll('a', attrs={'class': 'tit f-thide s-fc0'})
+        for i in song_list:
+            print(i['href'])
+            get_play_list(i['href'])
 
 
 def get_play_list(play_list_id):
@@ -55,7 +56,7 @@ def get_play_list(play_list_id):
     except Exception:
         print("list_error...")
         soup = None
-    if not soup:
+    if soup:
         song_list = soup.find('ul', attrs={'class': 'f-hide'})
         for i in song_list.findAll('li'):
             start_index = i.find('a')['href']
@@ -122,7 +123,7 @@ def get_song_info(song_id, total):
     except Exception:
         print("error...")
         soup = None
-    if not soup:
+    if soup:
         content_list = soup.title.string.split(' - ')
         song_name = content_list[0]
         song_singer = content_list[1]
